@@ -1,24 +1,26 @@
 {
-  addBuildInputs = inputs: package:
+  addBuildInputs =
+    inputs: package:
     package.overridePythonAttrs (old: {
       buildInputs = (old.buildInputs or [ ]) ++ inputs;
     });
 
-  addPropagatedBuildInputs = inputs: package:
+  addPropagatedBuildInputs =
+    inputs: package:
     package.overridePythonAttrs (old: {
       propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ inputs;
     });
 
-  addRunpaths = runpaths: package:
+  addRunpaths =
+    runpaths: package:
     package.overridePythonAttrs (old: {
       appendRunpaths = (old.appendRunpaths or [ ]) ++ runpaths;
     });
 
-  addSearchPaths = paths: package:
+  addSearchPaths =
+    paths: package:
     let
-      commands = map
-        (path: "addAutoPatchelfSearchPath ${path}")
-        paths;
+      commands = map (path: "addAutoPatchelfSearchPath ${path}") paths;
     in
     package.overridePythonAttrs (old: {
       preFixup = ''
@@ -27,22 +29,22 @@
       '';
     });
 
-  ignoreMissingDeps = deps: package:
+  ignoreMissingDeps =
+    deps: package:
     package.overridePythonAttrs (old: {
-      autoPatchelfIgnoreMissingDeps =
-        (old.autoPatchelfIgnoreMissingDeps or [ ]) ++ deps;
+      autoPatchelfIgnoreMissingDeps = (old.autoPatchelfIgnoreMissingDeps or [ ]) ++ deps;
     });
 
-  makeSymlinks = mapping: package:
+  makeSymlinks =
+    mapping: package:
     let
-      commands = map
-        (target:
-          let
-            source = mapping."${target}";
-          in
-          "ln --symbolic ${source} ${target}"
-        )
-        (builtins.attrNames mapping);
+      commands = map (
+        target:
+        let
+          source = mapping."${target}";
+        in
+        "ln --symbolic ${source} ${target}"
+      ) (builtins.attrNames mapping);
     in
     package.overridePythonAttrs (old: {
       preFixup = ''
@@ -51,11 +53,10 @@
       '';
     });
 
-  removeFiles = paths: package:
+  removeFiles =
+    paths: package:
     let
-      commands = map
-        (path: "rm --force --recursive ${path}")
-        paths;
+      commands = map (path: "rm --force --recursive ${path}") paths;
     in
     package.overridePythonAttrs (old: {
       postFixup = ''

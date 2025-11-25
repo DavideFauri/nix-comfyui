@@ -1,4 +1,11 @@
-{ autoPatchelfHook, basePython, ffmpeg_6, lib, sox, tbb_2021_11 }:
+{
+  autoPatchelfHook,
+  basePython,
+  ffmpeg_6,
+  lib,
+  sox,
+  tbb_2021_11,
+}:
 
 final: prev:
 
@@ -9,7 +16,8 @@ let
 
   bootstrappingBase = basePython.pythonOnBuildForHost.pkgs;
 
-  mkFailingPackage = { pname, message }:
+  mkFailingPackage =
+    { pname, message }:
     final.buildPythonPackage {
       inherit pname;
       version = "0.0.0";
@@ -19,18 +27,22 @@ let
       '';
     };
 
-  replaceOpenCV = package:
+  replaceOpenCV =
+    package:
     package.overridePythonAttrs (old: {
       propagatedBuildInputs =
         let
           originalInputs = old.propagatedBuildInputs;
-          filteredInputs = (builtins.filter
-            (x: !(builtins.elem x.pname [
-              "opencv-contrib-python"
-              "opencv-contrib-python-headless"
-              "opencv-python-headless"
-            ]))
-            originalInputs);
+          filteredInputs = (
+            builtins.filter (
+              x:
+              !(builtins.elem x.pname [
+                "opencv-contrib-python"
+                "opencv-contrib-python-headless"
+                "opencv-python-headless"
+              ])
+            ) originalInputs
+          );
         in
         if builtins.length originalInputs == builtins.length filteredInputs then
           throw "Package ${package.pname} does not depend on opencv-*"
@@ -82,7 +94,8 @@ in
 
   # Add autoPatchelfHook to all packages.
   # https://github.com/nix-community/poetry2nix/issues/1589
-  mkPoetryDep = attrs:
+  mkPoetryDep =
+    attrs:
     let
       originalPoetryDep = prev.mkPoetryDep attrs;
     in

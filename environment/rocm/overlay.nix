@@ -26,14 +26,11 @@ in
       "$out/${sitePackages}/torch/lib/libhipblaslt.so.0" =
         "$out/${sitePackages}/torch/lib/libhipblaslt.so";
 
-      "$out/${sitePackages}/torch/lib/libamdhip64.so.6" =
-        "$out/${sitePackages}/torch/lib/libamdhip64.so";
+      "$out/${sitePackages}/torch/lib/libamdhip64.so.6" = "$out/${sitePackages}/torch/lib/libamdhip64.so";
 
-      "$out/${sitePackages}/torch/lib/libhipblas.so.2" =
-        "$out/${sitePackages}/torch/lib/libhipblas.so";
+      "$out/${sitePackages}/torch/lib/libhipblas.so.2" = "$out/${sitePackages}/torch/lib/libhipblas.so";
 
-      "$out/${sitePackages}/torch/lib/libhipfft.so.0" =
-        "$out/${sitePackages}/torch/lib/libhipfft.so";
+      "$out/${sitePackages}/torch/lib/libhipfft.so.0" = "$out/${sitePackages}/torch/lib/libhipfft.so";
 
       "$out/${sitePackages}/torch/lib/libhipsolver.so.0" =
         "$out/${sitePackages}/torch/lib/libhipsolver.so";
@@ -41,8 +38,7 @@ in
       "$out/${sitePackages}/torch/lib/libhipsparse.so.1" =
         "$out/${sitePackages}/torch/lib/libhipsparse.so";
 
-      "$out/${sitePackages}/torch/lib/libMIOpen.so.1" =
-        "$out/${sitePackages}/torch/lib/libMIOpen.so";
+      "$out/${sitePackages}/torch/lib/libMIOpen.so.1" = "$out/${sitePackages}/torch/lib/libMIOpen.so";
     })
 
     (ops.addSearchPaths [

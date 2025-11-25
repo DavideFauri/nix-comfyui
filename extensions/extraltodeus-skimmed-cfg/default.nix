@@ -1,4 +1,9 @@
-{ buildExtension, fetchFromGitHub, lib, python3 }:
+{
+  buildExtension,
+  fetchFromGitHub,
+  lib,
+  python3,
+}:
 
 buildExtension {
   name = "extraltodeus-skimmed-cfg";

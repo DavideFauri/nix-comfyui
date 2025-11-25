@@ -1,4 +1,8 @@
-{ buildExtension, fetchFromGitHub, lib }:
+{
+  buildExtension,
+  fetchFromGitHub,
+  lib,
+}:
 
 buildExtension {
   name = "florestefano1975-portrait-master";

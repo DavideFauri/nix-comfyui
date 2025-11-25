@@ -1,10 +1,18 @@
-{ fetchFromGitHub, lib, makeWrapper, python3, stdenv }:
+{
+  fetchFromGitHub,
+  lib,
+  makeWrapper,
+  python3,
+  stdenv,
+}:
 
 let
-  pythonpath = python3.pkgs.makePythonPath (python3.pkgs.requiredPythonModules [
-    python3.pkgs.aiohttp
-    python3.pkgs.tqdm
-  ]);
+  pythonpath = python3.pkgs.makePythonPath (
+    python3.pkgs.requiredPythonModules [
+      python3.pkgs.aiohttp
+      python3.pkgs.tqdm
+    ]
+  );
 in
 
 stdenv.mkDerivation {

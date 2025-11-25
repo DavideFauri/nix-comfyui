@@ -1,28 +1,30 @@
-{ comfyui-unwrapped
-, extensions
-, lib
-, makeBinaryWrapper
-, pyproject
-, python3
-, stdenv
-, writeText
+{
+  comfyui-unwrapped,
+  extensions,
+  lib,
+  makeBinaryWrapper,
+  pyproject,
+  python3,
+  stdenv,
+  writeText,
 }:
 
 let
   scriptDependencies =
-    (map
-      (name: python3.pkgs."${name}")
-      (builtins.attrNames pyproject.passthru.content.tool.poetry.dependencies))
-    ++
-    [
+    (map (name: python3.pkgs."${name}") (
+      builtins.attrNames pyproject.passthru.content.tool.poetry.dependencies
+    ))
+    ++ [
       comfyui-unwrapped
       python3.pkgs.requirements-parser
     ];
 
-  scriptPythonPath = python3.pkgs.makePythonPath
-    (python3.pkgs.requiredPythonModules scriptDependencies);
+  scriptPythonPath = python3.pkgs.makePythonPath (
+    python3.pkgs.requiredPythonModules scriptDependencies
+  );
 
-  mkSpec = package:
+  mkSpec =
+    package:
     let
       check-pkgs = package.passthru.check-pkgs or { };
     in
@@ -30,24 +32,23 @@ let
       output = "${package}";
       from_requirements_file = check-pkgs.fromRequirementsFile or true;
       from_imports = check-pkgs.fromImports or true;
-      required_package_names = builtins.filter (p: p != "python3")
-        (map (p: p.pname) package.propagatedBuildInputs);
+      required_package_names = builtins.filter (p: p != "python3") (
+        map (p: p.pname) package.propagatedBuildInputs
+      );
       forced_package_names = check-pkgs.forcedPackageNames or [ ];
       ignored_package_names = check-pkgs.ignoredPackageNames or [ ];
       ignored_module_names = check-pkgs.ignoredModuleNames or [ ];
     };
 
-  specs =
-    {
-      "comfyui-unwrapped" = mkSpec comfyui-unwrapped;
-    }
-    //
-    builtins.listToAttrs (map
-      (name: {
-        name = "extensions.${name}";
-        value = mkSpec extensions."${name}";
-      })
-      (builtins.attrNames extensions));
+  specs = {
+    "comfyui-unwrapped" = mkSpec comfyui-unwrapped;
+  }
+  // builtins.listToAttrs (
+    map (name: {
+      name = "extensions.${name}";
+      value = mkSpec extensions."${name}";
+    }) (builtins.attrNames extensions)
+  );
 
   specsJson = writeText "check-pkgs-specs.json" (builtins.toJSON specs);
 in

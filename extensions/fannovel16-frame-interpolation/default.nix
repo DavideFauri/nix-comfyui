@@ -1,4 +1,10 @@
-{ buildExtension, fetchFromGitHub, lib, platform, python3 }:
+{
+  buildExtension,
+  fetchFromGitHub,
+  lib,
+  platform,
+  python3,
+}:
 
 buildExtension {
   name = "fannovel16-frame-interpolation";
@@ -26,10 +32,8 @@ buildExtension {
     python3.pkgs.torchvision
     python3.pkgs.tqdm
   ]
-  ++
-  (lib.optional (platform == "cuda") python3.pkgs.cupy-cuda12x)
-  ++
-  (lib.optional (platform != "cuda") python3.pkgs.taichi);
+  ++ (lib.optional (platform == "cuda") python3.pkgs.cupy-cuda12x)
+  ++ (lib.optional (platform != "cuda") python3.pkgs.taichi);
 
   postPatch = ''
     ${lib.optionalString (platform != "cuda") ''
@@ -61,10 +65,8 @@ buildExtension {
       "^vfi_models(\\..+)?$"
       "^vfi_utils$"
     ]
-    ++
-    (lib.optional (platform == "cuda") "^taichi(\\..+)?$")
-    ++
-    (lib.optional (platform != "cuda") "^cupy(\\..+)?$");
+    ++ (lib.optional (platform == "cuda") "^taichi(\\..+)?$")
+    ++ (lib.optional (platform != "cuda") "^cupy(\\..+)?$");
   };
 
   meta = {
