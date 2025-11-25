@@ -7,7 +7,7 @@ pkgs: self:
 
   rocm = self.overrideScope (_: _: { platform = "rocm"; });
 
-  basePython = pkgs.python311;
+  basePython = pkgs.python312;
 
   poetry = pkgs.poetry.override {
     python3 = self.basePython;
@@ -20,7 +20,6 @@ pkgs: self:
       toTOML,
       writeText,
     }:
-
     let
       finalContent = lib.recursiveUpdate {
         build-system = {
@@ -39,7 +38,6 @@ pkgs: self:
 
       drv = writeText "pyproject.toml" (toTOML finalContent);
     in
-
     drv
     // {
       passthru = (drv.passthru or { }) // {
@@ -69,7 +67,6 @@ pkgs: self:
           pyproject,
           writeShellApplication,
         }:
-
         writeShellApplication {
           name = "call-poetry";
           runtimeInputs = [
@@ -135,7 +132,6 @@ pkgs: self:
       platformOverlay,
       pyproject,
     }:
-
     let
       finalOverlays = [
         (x: baseOverlay x)
@@ -153,7 +149,6 @@ pkgs: self:
         extras = [ ];
       };
     in
-
     poetryResult.python
   ) { };
 }

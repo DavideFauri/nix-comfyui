@@ -4,7 +4,6 @@
   lib,
   python3,
 }:
-
 buildExtension {
   name = "gourieff-reactor";
   version = "0.5.2";
