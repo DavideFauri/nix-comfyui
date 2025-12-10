@@ -6,7 +6,7 @@ ComfyUI as a Nix expression. Give it a try:
 # ComfyUI is patched to keep models and other runtime data in $PWD.
 mkdir comfyui && cd comfyui
 # Run ComfyUI with all custom nodes packaged by this flake.
-nix run github:dyscorv/nix-comfyui#comfyui-with-extensions
+nix run github:DavideFauri/nix-comfyui#comfyui-with-extensions
 ```
 
 Then setup and run Krita with ComfyUI integration:
@@ -15,9 +15,9 @@ Then setup and run Krita with ComfyUI integration:
 # Change to the same directory in another terminal window.
 cd comfyui
 # Download the models required by "Generative AI for Krita".
-nix run github:dyscorv/nix-comfyui#krita-ai-diffusion -- --recommended --verbose .
+nix run github:DavideFauri/nix-comfyui#krita-ai-diffusion -- --recommended --verbose .
 # Run Krita with ComfyUI integration.
-nix run github:dyscorv/nix-comfyui#krita-with-extensions
+nix run github:DavideFauri/nix-comfyui#krita-with-extensions
 ```
 
 ## Usage with Nix Flakes
@@ -27,7 +27,7 @@ This project is a Nix flake which can be used as an input for another flake.
 ```nix
 {
   inputs = {
-    nix-comfyui.url = "github:dyscorv/nix-comfyui";
+    nix-comfyui.url = "github:DavideFauri/nix-comfyui";
     # nix-comfyui.inputs.flake-utils.follows = "flake-utils";
     # nix-comfyui.inputs.nixpkgs.follows = "nixpkgs";
     # nix-comfyui.inputs.poetry2nix.follows = "poetry2nix";
