@@ -3,7 +3,7 @@
 pkgs.lib.makeScope pkgs.newScope (
   self:
   (import ./environment pkgs self)
-  // {
+    // {
     inherit poetry2nix;
 
     inherit (import ./toml.nix) toTOML;
@@ -19,40 +19,42 @@ pkgs.lib.makeScope pkgs.newScope (
       krita-ai-diffusion
       ;
 
-    buildExtension = self.callPackage (
-      { emptyPyproject, python3 }:
+    buildExtension = self.callPackage
+      (
+        { emptyPyproject, python3 }:
 
-      attrs:
+        attrs:
 
-      let
-        pyproject = emptyPyproject.override {
-          content = {
-            tool.poetry = { inherit (attrs) name version; };
+        let
+          pyproject = emptyPyproject.override {
+            content = {
+              tool.poetry = { inherit (attrs) name version; };
+            };
           };
-        };
-      in
+        in
 
-      python3.pkgs.buildPythonPackage (
-        attrs
-        // {
-          format = "pyproject";
+        python3.pkgs.buildPythonPackage (
+          attrs
+          // {
+            format = "pyproject";
 
-          nativeBuildInputs = [
-            python3.pkgs.poetry-core
-          ];
+            nativeBuildInputs = [
+              python3.pkgs.poetry-core
+            ];
 
-          postPatch = ''
-            cp ${pyproject} pyproject.toml
-            ${attrs.postPatch or ""}
-          '';
+            postPatch = ''
+              cp ${pyproject} pyproject.toml
+              ${attrs.postPatch or ""}
+            '';
 
-          passthru = {
-            originalName = attrs.name;
+            passthru = {
+              originalName = attrs.name;
+            }
+            // (attrs.passthru or { });
           }
-          // (attrs.passthru or { });
-        }
+        )
       )
-    ) { };
+      { };
 
     extensions = import ./extensions {
       inherit (self) callPackage;
@@ -62,41 +64,45 @@ pkgs.lib.makeScope pkgs.newScope (
       extensions = builtins.attrValues self.extensions;
     };
 
-    krita-with-extensions = self.callPackage (
-      {
-        krita,
-        krita-ai-diffusion,
-        qt5,
-      }:
+    krita-with-extensions = self.callPackage
+      (
+        { krita
+        , krita-ai-diffusion
+        , qt5
+        ,
+        }:
 
-      # qtimageformats is a runtime dependency of krita-ai-diffusion.
-      # https://github.com/NixOS/nixpkgs/issues/304523
-      # https://github.com/Acly/krita-ai-diffusion/issues/582
+        # qtimageformats is a runtime dependency of krita-ai-diffusion.
+        # https://github.com/NixOS/nixpkgs/issues/304523
+        # https://github.com/Acly/krita-ai-diffusion/issues/582
 
-      krita.overrideAttrs (old: {
-        buildCommand = ''
-          ${old.buildCommand or ""}
+        krita.overrideAttrs (old: {
+          buildCommand = ''
+            ${old.buildCommand or ""}
 
-          wrapProgram $out/bin/krita \
-            --prefix QT_PLUGIN_PATH : ${qt5.qtimageformats}/${qt5.qtbase.qtPluginPrefix} \
-            --prefix XDG_DATA_DIRS : ${krita-ai-diffusion}/share
-        '';
-      })
-    ) { };
+            wrapProgram $out/bin/krita \
+              --prefix QT_PLUGIN_PATH : ${qt5.qtimageformats}/${qt5.qtbase.qtPluginPrefix} \
+              --prefix XDG_DATA_DIRS : ${krita-ai-diffusion}/share
+          '';
+        })
+      )
+      { };
 
-    run-check-pkgs = self.callPackage (
-      { check-pkgs, runCommand }:
+    run-check-pkgs = self.callPackage
+      (
+        { check-pkgs, runCommand }:
 
-      runCommand "run-check-pkgs"
-        {
-          nativeBuildInputs = [
+        runCommand "run-check-pkgs"
+          {
+            nativeBuildInputs = [
+              check-pkgs
+            ];
+          }
+          ''
             check-pkgs
-          ];
-        }
-        ''
-          check-pkgs
-          touch $out
-        ''
-    ) { };
+            touch $out
+          ''
+      )
+      { };
   }
 )

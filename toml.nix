@@ -1,18 +1,18 @@
 let
   renderTable =
     value:
-    assert builtins.isAttrs value;
-    builtins.concatStringsSep "" (
-      map (key: (renderKeyValue key value."${key}") + "\n") (builtins.attrNames value)
-    );
+      assert builtins.isAttrs value;
+      builtins.concatStringsSep "" (
+        map (key: (renderKeyValue key value."${key}") + "\n") (builtins.attrNames value)
+      );
 
   renderKeyValue =
     key: value: if value == null then "" else "${renderKey key} = ${renderValue value}";
 
   renderKey =
     key:
-    assert builtins.isString key;
-    if builtins.match "[A-Za-z0-9_-]+" key != null then key else builtins.toJSON key;
+      assert builtins.isString key;
+      if builtins.match "[A-Za-z0-9_-]+" key != null then key else builtins.toJSON key;
 
   renderValue =
     value:

@@ -13,38 +13,42 @@ pkgs: self:
     python3 = self.basePython;
   };
 
-  emptyPyproject = self.callPackage (
-    {
-      content,
-      lib,
-      toTOML,
-      writeText,
-    }:
-    let
-      finalContent = lib.recursiveUpdate {
-        build-system = {
-          build-backend = "poetry.core.masonry.api";
-          requires = [ "poetry-core" ];
-        };
-        tool.poetry = {
-          name = "";
-          version = "0.0.0";
-          description = "";
-          authors = [ ];
-          packages = [ { include = "**/*"; } ];
-          dependencies = { };
-        };
-      } content;
+  emptyPyproject = self.callPackage
+    (
+      { content
+      , lib
+      , toTOML
+      , writeText
+      ,
+      }:
+      let
+        finalContent = lib.recursiveUpdate
+          {
+            build-system = {
+              build-backend = "poetry.core.masonry.api";
+              requires = [ "poetry-core" ];
+            };
+            tool.poetry = {
+              name = "";
+              version = "0.0.0";
+              description = "";
+              authors = [ ];
+              packages = [{ include = "**/*"; }];
+              dependencies = { };
+            };
+          }
+          content;
 
-      drv = writeText "pyproject.toml" (toTOML finalContent);
-    in
-    drv
-    // {
-      passthru = (drv.passthru or { }) // {
-        content = finalContent;
-      };
-    }
-  ) { content = { }; };
+        drv = writeText "pyproject.toml" (toTOML finalContent);
+      in
+      drv
+      // {
+        passthru = (drv.passthru or { }) // {
+          content = finalContent;
+        };
+      }
+    )
+    { content = { }; };
 
   basePyproject = self.callPackage ./pyproject.nix { content = { }; };
 
@@ -59,13 +63,13 @@ pkgs: self:
   call-poetry =
     self.callPackage
       (
-        {
-          coreutils,
-          lib,
-          lockfile,
-          poetry,
-          pyproject,
-          writeShellApplication,
+        { coreutils
+        , lib
+        , lockfile
+        , poetry
+        , pyproject
+        , writeShellApplication
+        ,
         }:
         writeShellApplication {
           name = "call-poetry";
@@ -123,32 +127,34 @@ pkgs: self:
     else
       throw "Unsupported platform ${self.platform}";
 
-  python3 = self.callPackage (
-    {
-      baseOverlay,
-      basePython,
-      poetry2nix,
-      poetrylock,
-      platformOverlay,
-      pyproject,
-    }:
-    let
-      finalOverlays = [
-        (x: baseOverlay x)
-        (x: platformOverlay x)
-      ];
+  python3 = self.callPackage
+    (
+      { baseOverlay
+      , basePython
+      , poetry2nix
+      , poetrylock
+      , platformOverlay
+      , pyproject
+      ,
+      }:
+      let
+        finalOverlays = [
+          (x: baseOverlay x)
+          (x: platformOverlay x)
+        ];
 
-      poetryResult = poetry2nix.mkPoetryPackages {
-        inherit poetrylock;
-        pyProject = pyproject.passthru.content;
-        overrides = finalOverlays;
-        python = basePython;
-        preferWheels = true;
-        groups = [ ];
-        checkGroups = [ ];
-        extras = [ ];
-      };
-    in
-    poetryResult.python
-  ) { };
+        poetryResult = poetry2nix.mkPoetryPackages {
+          inherit poetrylock;
+          pyProject = pyproject.passthru.content;
+          overrides = finalOverlays;
+          python = basePython;
+          preferWheels = true;
+          groups = [ ];
+          checkGroups = [ ];
+          extras = [ ];
+        };
+      in
+      poetryResult.python
+    )
+    { };
 }

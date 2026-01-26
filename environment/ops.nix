@@ -38,13 +38,15 @@
   makeSymlinks =
     mapping: package:
     let
-      commands = map (
-        target:
-        let
-          source = mapping."${target}";
-        in
-        "ln --symbolic ${source} ${target}"
-      ) (builtins.attrNames mapping);
+      commands = map
+        (
+          target:
+          let
+            source = mapping."${target}";
+          in
+          "ln --symbolic ${source} ${target}"
+        )
+        (builtins.attrNames mapping);
     in
     package.overridePythonAttrs (old: {
       preFixup = ''

@@ -1,10 +1,10 @@
-{
-  autoPatchelfHook,
-  basePython,
-  ffmpeg_6,
-  lib,
-  sox,
-  tbb_2021_11,
+{ autoPatchelfHook
+, basePython
+, ffmpeg_6
+, lib
+, sox
+, tbb_2021_11
+,
 }:
 
 final: prev:
@@ -34,14 +34,16 @@ let
         let
           originalInputs = old.propagatedBuildInputs;
           filteredInputs = (
-            builtins.filter (
-              x:
-              !(builtins.elem x.pname [
-                "opencv-contrib-python"
-                "opencv-contrib-python-headless"
-                "opencv-python-headless"
-              ])
-            ) originalInputs
+            builtins.filter
+              (
+                x:
+                  !(builtins.elem x.pname [
+                    "opencv-contrib-python"
+                    "opencv-contrib-python-headless"
+                    "opencv-python-headless"
+                  ])
+              )
+              originalInputs
           );
         in
         if builtins.length originalInputs == builtins.length filteredInputs then

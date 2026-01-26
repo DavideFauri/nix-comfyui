@@ -1,26 +1,29 @@
-{
-  bubblewrap,
-  bwrapArgs,
-  comfyui-unwrapped,
-  commandLineArgs,
-  extensions,
-  frontend,
-  lib,
-  makeBinaryWrapper,
-  platform,
-  prepopulatedStateFiles,
-  python3,
-  stateDirs,
-  stdenv,
-  writeText,
+{ bubblewrap
+, bwrapArgs
+, comfyui-unwrapped
+, commandLineArgs
+, extensions
+, frontend
+, lib
+, makeBinaryWrapper
+, platform
+, prepopulatedStateFiles
+, python3
+, stateDirs
+, stdenv
+, writeText
+,
 }:
 
 let
   inherit (python3) sitePackages;
 
-  propagatedBuildInputs = builtins.foldl' (
-    acc: extension: acc ++ (extension.propagatedBuildInputs or [ ])
-  ) comfyui-unwrapped.propagatedBuildInputs extensions;
+  propagatedBuildInputs = builtins.foldl'
+    (
+      acc: extension: acc ++ (extension.propagatedBuildInputs or [ ])
+    )
+    comfyui-unwrapped.propagatedBuildInputs
+    extensions;
 
   interpreter = python3.withPackages (_: propagatedBuildInputs);
 
@@ -39,10 +42,12 @@ let
       comfyui = "${comfyui-unwrapped}/${sitePackages}";
       comfyui_args = commandLineArgs;
       extensions = builtins.listToAttrs (
-        map (ext: {
-          name = ext.passthru.originalName;
-          value = "${ext}/${sitePackages}";
-        }) extensions
+        map
+          (ext: {
+            name = ext.passthru.originalName;
+            value = "${ext}/${sitePackages}";
+          })
+          extensions
       );
       frontend = "${frontend}/share/comfyui/web";
       interpreter = lib.getExe interpreter;

@@ -1,7 +1,7 @@
-{
-  buildExtension,
-  fetchFromGitHub,
-  lib,
+{ buildExtension
+, fetchFromGitHub
+, lib
+,
 }:
 
 buildExtension {

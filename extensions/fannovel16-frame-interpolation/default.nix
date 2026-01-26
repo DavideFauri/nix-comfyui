@@ -1,9 +1,9 @@
-{
-  buildExtension,
-  fetchFromGitHub,
-  lib,
-  platform,
-  python3,
+{ buildExtension
+, fetchFromGitHub
+, lib
+, platform
+, python3
+,
 }:
 
 buildExtension {

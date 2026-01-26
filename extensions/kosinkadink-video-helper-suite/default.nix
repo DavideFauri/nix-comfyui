@@ -1,11 +1,11 @@
-{
-  buildExtension,
-  fetchFromGitHub,
-  ffmpeg,
-  gifski,
-  lib,
-  python3,
-  yt-dlp,
+{ buildExtension
+, fetchFromGitHub
+, ffmpeg
+, gifski
+, lib
+, python3
+, yt-dlp
+,
 }:
 
 buildExtension {

@@ -1,9 +1,9 @@
-{
-  fetchFromGitHub,
-  lib,
-  makeWrapper,
-  python3,
-  stdenv,
+{ fetchFromGitHub
+, lib
+, makeWrapper
+, python3
+, stdenv
+,
 }:
 
 let
@@ -22,8 +22,8 @@ stdenv.mkDerivation {
     owner = "Acly";
     repo = "krita-ai-diffusion";
     fetchSubmodules = true;
-    rev = "4a044cf3e55dace31ea365cee8aa0179f8f57674";
-    hash = "sha256-WNCovFlH8JV3abOlVRmqBifGVQVjYkkyTigvQqbnTPI=";
+    rev = "7c896ca1776c9de01dd6a25f8bdfedc791d2396b";
+    hash = "sha256-nt8zh7rCgV0WSrzqagxG/Saa6KlVJnxPEt2fss9qMD8=";
   };
 
   nativeBuildInputs = [

@@ -1,8 +1,8 @@
-{
-  emptyPyproject,
-  fetchFromGitHub,
-  lib,
-  python3,
+{ emptyPyproject
+, fetchFromGitHub
+, lib
+, python3
+,
 }:
 
 let

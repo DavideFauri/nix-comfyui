@@ -1,9 +1,9 @@
-{
-  buildExtension,
-  fetchFromGitHub,
-  ffmpeg,
-  lib,
-  python3,
+{ buildExtension
+, fetchFromGitHub
+, ffmpeg
+, lib
+, python3
+,
 }:
 
 buildExtension {

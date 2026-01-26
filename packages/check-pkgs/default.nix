@@ -1,12 +1,12 @@
-{
-  comfyui-unwrapped,
-  extensions,
-  lib,
-  makeBinaryWrapper,
-  pyproject,
-  python3,
-  stdenv,
-  writeText,
+{ comfyui-unwrapped
+, extensions
+, lib
+, makeBinaryWrapper
+, pyproject
+, python3
+, stdenv
+, writeText
+,
 }:
 
 let
@@ -44,10 +44,12 @@ let
     "comfyui-unwrapped" = mkSpec comfyui-unwrapped;
   }
   // builtins.listToAttrs (
-    map (name: {
-      name = "extensions.${name}";
-      value = mkSpec extensions."${name}";
-    }) (builtins.attrNames extensions)
+    map
+      (name: {
+        name = "extensions.${name}";
+        value = mkSpec extensions."${name}";
+      })
+      (builtins.attrNames extensions)
   );
 
   specsJson = writeText "check-pkgs-specs.json" (builtins.toJSON specs);
