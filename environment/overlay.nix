@@ -3,7 +3,7 @@
 , ffmpeg_6
 , lib
 , sox
-, tbb_2021_11
+, tbb
 ,
 }:
 
@@ -110,7 +110,7 @@ in
   numba = lib.pipe prev.numba [
     (ops.addBuildInputs [
       # libtbb.so.12
-      tbb_2021_11
+      tbb
     ])
   ];
 
