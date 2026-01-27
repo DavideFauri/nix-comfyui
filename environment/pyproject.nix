@@ -38,7 +38,7 @@ let
         onnx = "*";
         onnxruntime = "*";
         open-clip-torch = "*";
-        opencv-python = "==4.7.0.72";
+        opencv-python = "*";
         packaging = "*";
         pandas = "*";
         pillow = "*";
