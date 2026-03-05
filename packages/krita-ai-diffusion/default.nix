@@ -31,7 +31,7 @@ stdenv.mkDerivation {
   ];
 
   patches = [
-    ./0001-fix-paths.patch
+    #    ./0001-fix-paths.patch # probably not needed anymore, we are using v 1.48.0
   ];
 
   installPhase = ''
